@@ -36,3 +36,5 @@
     text-align: center;
     font-size: 120%;
 }
+.yes{ color: darkgreen; }
+.no{ color: darkred; }

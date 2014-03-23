@@ -42,4 +42,15 @@ return array(
 			),
 		),
 	),
+    'modules'=>array(
+        'gii'=>array(
+            'class'=>'system.gii.GiiModule',
+            'password'=>'179opw-zm',
+        ),
+    ),
+    'params'=>array(
+        'liteDbFile'=>'db/database.txt',
+        'udpxy_host'=>'localhost',
+        'udpxy_port'=>80,
+    ),
 );

@@ -27,8 +27,21 @@ class SiteController extends CController
 	}
 
 	public function actionIndex()
-	{
-		$this->render('index');
+    {
+
+        //Status of Udpxy port
+        if($fp = @fsockopen(Yii::app()->params['udpxy_host'], Yii::app()->params['udpxy_port'], $errno, $errstr, 1))
+        {  fclose($fp); $udpxy_status=true; }
+        else $udpxy_status=false;
+
+
+        //Get last request time on UdpXY
+        $litedb = new LiteTextDb();
+        $udpxy_lastact=$litedb->get_value('udpxy_lastact');
+
+
+
+		$this->render('index',array('lastact'=>$udpxy_lastact, 'status'=>$udpxy_status));
 	}
 	
 	public function actionError()
