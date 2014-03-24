@@ -1,6 +1,6 @@
 <h2>Тарифные планы:</h2>
 
-<table class="well newTariff">
+<table class="well formpadding">
     <tr>
         <form action="" method="POST">
         <td>Название тарифа: </td>

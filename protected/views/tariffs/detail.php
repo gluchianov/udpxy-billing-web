@@ -36,3 +36,7 @@
         </tr>
     </tbody>
 </table>
+
+<?php $this->renderPartial('_channels',array(
+    'chanells'=>$chanells
+)); ?>
