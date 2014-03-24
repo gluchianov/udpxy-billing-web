@@ -10,6 +10,7 @@
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
       <script src="js/respond.min.js"></script>
+      <?php Yii::app()->getClientScript()->registerCoreScript('jquery'); ?>
     <![endif]-->
   </head>
   <body>
@@ -52,7 +53,6 @@
 		<?php echo $content; ?>
     </div>
 
-    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.min.js"></script>
     <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/bootstrap.min.js"></script>
   </body>
 </html>
