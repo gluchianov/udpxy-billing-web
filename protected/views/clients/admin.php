@@ -40,11 +40,26 @@ $('.search-form form').submit(function(){
     'ajaxUpdate'=>true,
     'ajaxUrl'=> Yii::app()->request->getUrl(),
 	'columns'=>array(
+        array
+        (
+            'class'=>'CButtonColumn',
+            'template'=>'{order}',
+            'buttons'=>array
+            (
+                'order' => array
+                (
+                    'label'=>'Заказы клиента',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/icon_order.png',
+                    'url'=>'Yii::app()->createUrl("orders/view", array("client"=>$data->id))',
+                ),
+            ),
+        ),
 		'id',
 		'name',
 		'contact',
 		'ip',
 		array(
+            'header'=>'Действия',
 			'class'=>'CButtonColumn',
             'template'=>'{update}{delete}',
 		),
