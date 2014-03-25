@@ -1,5 +1,5 @@
 <h2>Статус биллинга:</h2>
-<table class="table .table-responsive table-striped table-bordered table-hover ">
+<table class="table table-responsive table-striped table-bordered table-hover ">
     <tbody>
         <tr>
             <td>Последняя активность:</td>
