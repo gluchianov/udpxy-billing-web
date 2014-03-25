@@ -13,6 +13,7 @@
         <td><?php echo $cl->ip; ?></td>
     </tr>
 </table>
+<?php echo CHtml::link('Оформить подписку',array("add",'client'=>$cl->id),array('class'=>'btn btn-info')); ?>
 <h3>Активные заказы по тарифам:</h3>
 <table  class="table table-responsive table-striped table-bordered table-hover">
     <thead>

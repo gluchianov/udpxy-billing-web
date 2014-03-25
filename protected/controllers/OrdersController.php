@@ -12,7 +12,7 @@ class OrdersController extends CController
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','add'),
 				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
@@ -20,6 +20,32 @@ class OrdersController extends CController
 			),
 		);
 	}
+
+    public function actionAdd(){
+        if (!isset($_GET['client'])) $this->redirect(array('/clients'));
+        $client=Clients::model()->findByPk((int)$_GET['client']);
+
+        //Добавление подписки
+        if(isset($_POST['enddate'])&&($_POST['enddate']!='')){
+            $neworder=new Orders();
+            $neworder->id_tvpack=$_POST['tariffid'];
+            $neworder->id_user=$_POST['clientid'];
+            $neworder->start_operator=Yii::app()->user->id;
+            $neworder->end_operator=0;
+            $neworder->status=1;
+            $neworder->start_date=date("Y-m-d H:i:s",strtotime($_POST['startdate']));
+            $neworder->end_date=date("Y-m-d H:i:s",strtotime($_POST['enddate'])+86399);
+
+            if($neworder->save())
+                $this->redirect(array('view','client'=>(int)$_POST['clientid']));
+
+        }
+
+        $tariffs=CHtml::listData(Tvpack::model()->findAll(),'id','name');
+
+
+        $this->render('neworder',array('client'=>$client,'tariffs'=>$tariffs));
+    }
 
     public function actionIndex(){
         $this->redirect(array("/clients"));
@@ -29,6 +55,7 @@ class OrdersController extends CController
 	{
         //Закрытие оконченных подписок
         $this->CheckOrders();
+        if (!isset($_GET['client'])) $this->redirect(array('/clients'));
 
         //-------------Закрытие подписки ----------------------------------
         if (isset($_POST['deleteOId'])&&($_POST['deleteOId'])!=''){
@@ -55,6 +82,7 @@ class OrdersController extends CController
         $criteria->compare('id_user',$client->id);
         $criteria->compare('status',0);
         $criteria->limit=10;
+        $criteria->order="id DESC";
         $archive_orders=Orders::model()->findAll($criteria);
         $archive_orders_arr=array();
         foreach ($archive_orders as $arch_order){
