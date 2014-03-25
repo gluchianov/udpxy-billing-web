@@ -13,6 +13,7 @@
     if ($history_data==NULL){echo '<tr><td colspan="7" style="text-align: center">Нет архивных подписок</td></tr>';}
     else
         foreach ($history_data as $my_order){ ?>
+            <tr>
             <td>
                 <?php echo $my_order['ord_data']->id; ?>
             </td>
@@ -39,6 +40,7 @@
             <td>
                 <?php echo $my_order['end_operator']; ?>
             </td>
+            </tr>
         <?php } ?>
     </tbody>
 </table>
