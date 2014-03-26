@@ -18,7 +18,8 @@
         </tr>
         <tr>
             <td>Действует до: <br/>Окончание в 23:59:59</td>
-            <td><?php echo CHtml::dateField('enddate',$_POST['enddate']); ?></td>
+            <?php if(isset($_POST['enddate'])) $d=$_POST['enddate']; else $d='';  ?>
+            <td><?php echo CHtml::dateField('enddate',$d); ?></td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;"><input type="submit" name="newOrderSubmit" value="Оформить подписку" /></td>

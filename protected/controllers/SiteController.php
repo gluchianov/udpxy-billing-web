@@ -60,6 +60,7 @@ class SiteController extends CController
 		if (!defined('CRYPT_BLOWFISH')||!CRYPT_BLOWFISH)
 			throw new CHttpException(500,"This application requires that PHP was compiled with Blowfish support for crypt().");
 
+        $LoginError=false;
 		// collect user input data
 		if(isset($_POST['LoginSubmit']))
 		{
