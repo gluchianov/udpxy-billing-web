@@ -31,6 +31,7 @@ class Clients extends CActiveRecord
 			array('name', 'length', 'max'=>128),
 			array('contact', 'length', 'max'=>255),
 			array('ip', 'length', 'max'=>15),
+            array('ip', 'unique', 'message'=>'Запись с таким IP уже существует.'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, name, contact, ip', 'safe', 'on'=>'search'),
