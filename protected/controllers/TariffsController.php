@@ -79,7 +79,7 @@ class TariffsController extends CController{
         }
 
         $criteria= new CDbCriteria();
-        $criteria->compare(id_tvpack,$tariff->id);
+        $criteria->compare('id_tvpack',$tariff->id);
         $chanells=TvpackList::model()->findAll($criteria);
 
 
