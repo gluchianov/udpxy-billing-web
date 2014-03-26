@@ -28,7 +28,7 @@
             </td>
             <td>
                 <?php
-                switch ($my_order->status){
+                switch ($my_order['ord_data']->status){
                     case 1: echo "<span style='color: green;'>Оформлена</span>"; break;
                     case 0: echo "<span style='color: red;'>Закрыта</span>"; break;
                     default: break;

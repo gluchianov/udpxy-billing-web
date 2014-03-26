@@ -37,6 +37,7 @@ class TariffsController extends CController{
     }
     public function actionDetail(){
         $tariff=Tvpack::model()->findByPk((int)$_GET['id']);
+        if ($tariff==NULL) $this->redirect(array('index'));
 
         //----------------Управление тарифом----------------
         if (isset($_POST['newName'])&&($_POST['newName'])!=''){
@@ -51,8 +52,11 @@ class TariffsController extends CController{
         }
         if (isset($_POST['deleteTid'])&&($_POST['deleteTid'])!=''){
             if ((int)$_POST['deleteTid']==$tariff->id)
-                if ($tariff->delete())
+                if ($tariff->delete()){
+                    TvpackList::model()->deleteAllByAttributes(array('id_tvpack'=>$tariff->id));
                     $this->redirect(array("index"));
+                }
+
         }
         //----------------Управление каналами в тарифе----------------
         if ((isset($_POST['newChName'])&&($_POST['newChName']))&&
@@ -74,7 +78,9 @@ class TariffsController extends CController{
                     $this->redirect(array('detail','id'=>$tariff->id));
         }
 
-        $chanells=TvpackList::model()->findAll();
+        $criteria= new CDbCriteria();
+        $criteria->compare(id_tvpack,$tariff->id);
+        $chanells=TvpackList::model()->findAll($criteria);
 
 
         $this->render('detail',array('tariff'=>$tariff,'chanells'=>$chanells));
