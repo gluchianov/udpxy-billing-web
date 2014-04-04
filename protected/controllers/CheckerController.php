@@ -10,8 +10,8 @@ class CheckerController extends CController{
 			$lastupdate=new LiteTextDb();
 			
 			if ((time()-$lastupdate->get_value('udpxy_lastcheck'))>=300){ //Check every 5minut
-			$this->CheckOrders();
-			$lastupdate->add_param('udpxy_lastcheck',time());
+				$this->CheckOrders();
+				$lastupdate->add_param('udpxy_lastcheck',time());
 			}
 			
             $lastupdate->add_param('udpxy_lastact',time());
