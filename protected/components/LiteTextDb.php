@@ -34,7 +34,8 @@ class LiteTextDb extends CComponent{
     }
     public function get_value($pname){
         $this->load_db();
-        return $this->_params[$pname];
+		if (!isset($this->_params[$pname])) return NULL;
+		else $this->_params[$pname];
     }
 
 
