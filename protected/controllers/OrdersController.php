@@ -30,6 +30,7 @@ class OrdersController extends CController
             $neworder=new Orders();
             $neworder->id_tvpack=$_POST['tariffid'];
             $neworder->id_user=$_POST['clientid'];
+			$neworder->id_allowed=0;
             $neworder->start_operator=Yii::app()->user->id;
             $neworder->end_operator=0;
             $neworder->status=1;

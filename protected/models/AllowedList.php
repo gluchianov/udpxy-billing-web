@@ -1,27 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "orders".
+ * This is the model class for table "allowed_list".
  *
- * The followings are the available columns in table 'orders':
  * @property string $id
- * @property string $id_user
- * @property string $id_allowed
- * @property string $id_tvpack
- * @property string $start_date
- * @property string $end_date
- * @property integer $status
- * @property string $start_operator
- * @property string $end_operator
+ * @property string $descr
+ * @property string $ip_start
+ * @property string $ip_end
  */
-class Orders extends CActiveRecord
+class AllowedList extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'orders';
+		return 'allowed_list';
 	}
 
 	/**
@@ -32,12 +26,12 @@ class Orders extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_user, id_allowed, id_tvpack, start_date, end_date, status, start_operator, end_operator', 'required'),
-			array('status', 'numerical', 'integerOnly'=>true),
-			array('id_user, id_allowed, id_tvpack, start_operator, end_operator', 'length', 'max'=>10),
+			array('descr, ip_start, ip_end', 'required'),
+			array('descr', 'length', 'max'=>32),
+			array('ip_start, ip_end', 'length', 'max'=>15),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, id_user, id_allowed, id_tvpack, start_date, end_date, status, start_operator, end_operator', 'safe', 'on'=>'search'),
+			array('id, descr, ip_start, ip_end', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -59,14 +53,9 @@ class Orders extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'id_user' => 'Id User',
-			'id_allowed'=>'Id Allowed list',
-			'id_tvpack' => 'Id Tvpack',
-			'start_date' => 'Start Date',
-			'end_date' => 'End Date',
-			'status' => 'Status',
-			'start_operator' => 'Start Operator',
-            'end_operator' => 'End Operator',
+			'descr' => 'Описание',
+			'ip_start' => 'Старторый IP',
+			'ip_end' => 'Конечный IP',
 		);
 	}
 
@@ -89,14 +78,9 @@ class Orders extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('id_user',$this->id_user,true);
-		$criteria->compare('id_allowed',$this->id_allowed,true);
-		$criteria->compare('id_tvpack',$this->id_tvpack,true);
-		$criteria->compare('start_date',$this->start_date,true);
-		$criteria->compare('end_date',$this->end_date,true);
-		$criteria->compare('status',$this->status);
-		$criteria->compare('start_operator',$this->start_operator,true);
-        $criteria->compare('end_operator',$this->end_operator,true);
+		$criteria->compare('descr',$this->descr,true);
+		$criteria->compare('ip_start',$this->ip_start,true);
+		$criteria->compare('ip_end',$this->ip_end,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -107,7 +91,7 @@ class Orders extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Orders the static model class
+	 * @return Clients the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
