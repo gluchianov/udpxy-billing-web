@@ -15,7 +15,7 @@ return array(
 		'application.components.*',
 	),
 
-	'defaultController'=>'site',
+	'defaultController'=>'My',
 
 	// application components
 	'components'=>array(
@@ -36,6 +36,7 @@ return array(
 			'errorAction'=>'site/error',
 		),
 		'urlManager'=>array(
+            'showScriptName' => false,
 			'urlFormat'=>'path',
 			'rules'=>array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',

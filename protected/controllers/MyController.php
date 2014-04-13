@@ -10,9 +10,23 @@ class MyController extends CController{
     }
 
     public function actionIndex(){
-        
+
         $criteria=new CDbCriteria();
-        $criteria->select=array('start_date','end_date');
+        $criteria->addCondition('ip=:claddr');
+        $criteria->params=array(':claddr'=>$this->GetRealIp());
+        $user=Clients::model()->find($criteria);
+
+        $criteria=new CDbCriteria();
+        $criteria->addCondition('start_date<=NOW() AND end_date>=NOW()');
+        $criteria->compare('status',1);
+        $criteria->compare('id_user',$user->id);
+        $criteria->compare('id_allowed',0);
+        $criteria->with=array('tvpack'=>array('tvpack.name, tvpack.descr'));
+        $criteria->together=true;
+        $orders=Orders::model()->findAll($criteria);
+
+        $criteria=new CDbCriteria();
+        $criteria->select=array('id','start_date','end_date');
         $criteria->addCondition('INET_ATON(allowed.ip_start)<=:claddr');
         $criteria->addCondition('INET_ATON(allowed.ip_end)>=:claddr');
         $criteria->params=array(':claddr'=>ip2long($this->GetRealIp()));
@@ -20,14 +34,11 @@ class MyController extends CController{
         $criteria->together=true;
         $allowed_list=Orders::model()->findAll($criteria);
 
+        $this->render('index',array('allowed_list'=>$allowed_list,'orders'=>$orders,'user'=>$user,'ip'=>$this->GetRealIp()));
+    }
+
+    public function actionGetPlaylist(){
         $criteria=new CDbCriteria();
 
-
-        $criteria=new CDbCriteria();
-        $criteria->addCondition('ip=:claddr');
-        $criteria->params=array(':claddr'=>$this->GetRealIp());
-        $user=Clients::model()->find($criteria);
-
-        $this->render('index',array('allowed_list'=>$allowed_list,'user'=>$user,'ip'=>$this->GetRealIp()));
     }
 } 
