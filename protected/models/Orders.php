@@ -49,6 +49,8 @@ class Orders extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+            'tvpack'   => array(self::BELONGS_TO, 'TvPack', 'id_tvpack'),
+            'allowed'   => array(self::BELONGS_TO, 'AllowedList', 'id_allowed'),
 		);
 	}
 

@@ -18,11 +18,11 @@ class CheckerController extends CController{
             $lastupdate->write_db();
 			
 			$criteria=new CDbCriteria();
-            $criteria->addCondition('ip_start<=:claddr');
-			$criteria->addCondition('ip_end>=:claddr');
+            $criteria->addCondition('INET_ATON(ip_start)<=:claddr');
+			$criteria->addCondition('INET_ATON(ip_end)>=:claddr');
             $criteria->params=array(':claddr'=>ip2long($_GET['claddr']));
-			$allowed_list=AllowedList::model()->find($criteria);
-			
+			$allowed_list=AllowedList::model()->findAll($criteria);
+
             $criteria=new CDbCriteria();
             $criteria->addCondition('ip=:claddr');
             $criteria->params=array(':claddr'=>$_GET['claddr']);
