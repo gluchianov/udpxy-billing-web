@@ -33,6 +33,7 @@
 			  'items'=>array(
 				array('label'=>'Клиенты', 'url'=>array('/clients'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Тарифы', 'url'=>array('/tariffs'), 'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>'Каналы', 'url'=>array('/channels'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Войти', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 			  ),
 			)); ?>

@@ -58,30 +58,6 @@ class TariffsController extends CController{
                 }
 
         }
-        //----------------Управление каналами в тарифе----------------
-        if ((isset($_POST['newChName'])&&($_POST['newChName']))&&
-            (isset($_POST['newChIP'])&&($_POST['newChIP']))&&
-            (isset($_POST['newChPort'])&&($_POST['newChPort']))){
-
-                $newchanel=new TvpackList();
-                $newchanel->id_tvpack=$tariff->id;
-                $newchanel->ch_name=$_POST['newChName'];
-                $newchanel->m_ip=$_POST['newChIP'];
-                $newchanel->m_port=$_POST['newChPort'];
-                if($newchanel->save())
-                    $this->redirect(array('detail','id'=>$tariff->id));
-        }
-
-        if (isset($_POST['deleteChId'])&&($_POST['deleteChId'])!=''){
-                $ch=TvpackList::model()->findByPk((int)$_POST['deleteChId']);
-                if ($ch->delete())
-                    $this->redirect(array('detail','id'=>$tariff->id));
-        }
-
-        $criteria= new CDbCriteria();
-        $criteria->compare('id_tvpack',$tariff->id);
-        $chanells=TvpackList::model()->findAll($criteria);
-
 
         $this->render('detail',array('tariff'=>$tariff,'chanells'=>$chanells));
     }

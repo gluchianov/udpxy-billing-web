@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 14 2014 г., 12:27
+-- Время создания: Апр 14 2014 г., 12:48
 -- Версия сервера: 5.6.15-log
 -- Версия PHP: 5.5.6
 
@@ -41,6 +41,28 @@ CREATE TABLE IF NOT EXISTS `allowed_list` (
 INSERT INTO `allowed_list` (`id`, `descr`, `ip_start`, `ip_end`) VALUES
 (1, 'BaydarLan 10.10.10.0/24', '10.10.10.0', '10.10.10.254'),
 (2, 'Localhost', '127.0.0.1', '127.0.0.10');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `channels`
+--
+
+CREATE TABLE IF NOT EXISTS `channels` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ch_name` varchar(32) NOT NULL,
+  `m_ip` varchar(15) NOT NULL,
+  `m_port` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Дамп данных таблицы `channels`
+--
+
+INSERT INTO `channels` (`id`, `ch_name`, `m_ip`, `m_port`) VALUES
+(1, 'НТВ+ Теннис', '233.191.133.14', 1234),
+(3, 'Первый канал', '238.1.1.131', 1234);
 
 -- --------------------------------------------------------
 
@@ -138,29 +160,6 @@ CREATE TABLE IF NOT EXISTS `tvpack` (
 INSERT INTO `tvpack` (`id`, `name`, `descr`) VALUES
 (1, 'Тест', 'Тестовый тариф'),
 (2, 'FreeTV', 'Свободные каналы');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `tvpack_list`
---
-
-CREATE TABLE IF NOT EXISTS `tvpack_list` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_tvpack` int(10) unsigned NOT NULL,
-  `ch_name` varchar(32) NOT NULL,
-  `m_ip` varchar(15) NOT NULL,
-  `m_port` smallint(5) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Дамп данных таблицы `tvpack_list`
---
-
-INSERT INTO `tvpack_list` (`id`, `id_tvpack`, `ch_name`, `m_ip`, `m_port`) VALUES
-(1, 1, 'НТВ+ Теннис', '233.191.133.14', 1234),
-(2, 2, 'СТВ', '238.1.1.4', 1234);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
