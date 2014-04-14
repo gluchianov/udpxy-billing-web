@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 04 2014 г., 11:49
+-- Время создания: Апр 14 2014 г., 12:27
 -- Версия сервера: 5.6.15-log
 -- Версия PHP: 5.5.6
 
@@ -29,17 +29,18 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `allowed_list` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `descr` varchar(32) NOT NULL,
-  `ip_start` int(11) NOT NULL,
-  `ip_end` int(11) NOT NULL,
+  `ip_start` varchar(16) NOT NULL,
+  `ip_end` varchar(16) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Дамп данных таблицы `allowed_list`
 --
 
 INSERT INTO `allowed_list` (`id`, `descr`, `ip_start`, `ip_end`) VALUES
-(1, 'BaydarLan 10.10.10.0/24', 168430080, 168430334);
+(1, 'BaydarLan 10.10.10.0/24', '10.10.10.0', '10.10.10.254'),
+(2, 'Localhost', '127.0.0.1', '127.0.0.10');
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
 --
 
 INSERT INTO `clients` (`id`, `name`, `contact`, `ip`) VALUES
-(1, 'Илья', '0991234567', '10.10.10.254');
+(1, 'Илья', '0991234567', '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -105,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `start_operator` int(10) unsigned NOT NULL,
   `end_operator` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Дамп данных таблицы `orders`
@@ -114,7 +115,8 @@ CREATE TABLE IF NOT EXISTS `orders` (
 INSERT INTO `orders` (`id`, `id_user`, `id_allowed`, `id_tvpack`, `start_date`, `end_date`, `status`, `start_operator`, `end_operator`) VALUES
 (1, 1, 0, 1, '2014-03-26 00:00:00', '2014-04-30 07:21:58', 1, 65001, 65000),
 (2, 1, 0, 2, '2014-03-26 00:00:00', '2014-03-26 19:23:22', 0, 65001, 65001),
-(3, 0, 1, 1, '2014-04-03 00:00:00', '2014-04-04 16:48:30', 1, 1, 0);
+(3, 0, 1, 1, '2014-04-03 00:00:00', '2014-04-13 09:17:03', 0, 1, 65000),
+(4, 0, 2, 1, '2014-04-01 00:00:00', '2014-04-30 00:00:00', 1, 1, 0);
 
 -- --------------------------------------------------------
 
