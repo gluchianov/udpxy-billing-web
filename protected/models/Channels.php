@@ -8,6 +8,7 @@
  * @property string $ch_name
  * @property string $m_ip
  * @property integer $m_port
+ * @property integer $params
  */
 class Channels extends CActiveRecord
 {
@@ -27,13 +28,13 @@ class Channels extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('ch_name, m_ip, m_port', 'required'),
+			array('ch_name, m_ip, m_port, params', 'required'),
 			array('m_port', 'numerical', 'integerOnly'=>true),
 			array('ch_name', 'length', 'max'=>32),
 			array('m_ip', 'length', 'max'=>15),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, ch_name, m_ip, m_port', 'safe', 'on'=>'search'),
+			array('id, ch_name, m_ip, m_port, params', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,6 +59,7 @@ class Channels extends CActiveRecord
 			'ch_name' => 'Ch Name',
 			'm_ip' => 'M Ip',
 			'm_port' => 'M Port',
+            'params'=>'Params',
 		);
 	}
 
@@ -83,6 +85,7 @@ class Channels extends CActiveRecord
 		$criteria->compare('ch_name',$this->ch_name,true);
 		$criteria->compare('m_ip',$this->m_ip,true);
 		$criteria->compare('m_port',$this->m_port);
+        $criteria->compare('params',$this->params);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

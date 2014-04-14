@@ -74,7 +74,7 @@ class MyController extends CController{
 
         //ob_start();
 
-echo "#EXTM3U cache=500 deinterlace=1 m3uautoload=1
+echo "#EXTM3U cache=1000 deinterlace=7 url-tvg=\"http://tv.sevstar.net/tvprog.zip\" tvg-shift=0 m3uautoload=1
 
 ";
 

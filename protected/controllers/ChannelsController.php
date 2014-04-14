@@ -42,10 +42,58 @@ class ChannelsController extends CController{
                 $this->redirect(array('index'));
         }
 
+        if (isset($_FILES['playlistfile'])){
+            $channels=$this->ParseM3UPlaylist($_FILES['playlistfile']['tmp_name']);
+            foreach ($channels as $channel){
+                $newchanel=new Channels();
+                $newchanel->ch_name=$channel['name'];
+                $newchanel->m_ip=$channel['maddr'];
+                $newchanel->m_port=$channel['mport'];
+                $newchanel->params=json_encode($channel['params']);
+                $newchanel->save();
+            }
+        }
+
         $chanells=Channels::model()->findAll();
 
         $this->render('index',array('chanells'=>$chanells));
 
+    }
+
+    private function ParseM3UPlaylist($filepath){
+        $handle = @fopen($filepath, "r");
+        if ($handle) {
+            $buffer = array();
+            while (($line = fgets($handle)) !== false) {
+                if(($line != "\n") && ($line != "\r") && ($line != "\r\n") && ($line != "\n\r"))
+                    $buffer[] = $line;
+            }
+            $pos=0;
+            $channels=array();
+            while ($pos<count($buffer)){
+                $extinf=stristr($buffer[$pos],"#EXTINF:");
+                $urlstr=stristr($buffer[$pos+1],"udp://@");
+                if (($extinf!=null)&&($urlstr!=null)){
+                    $ch_arr=array();
+
+                    if (preg_match("/(group-title=\")(.*?)\"/",$extinf,$tariff)) $cur_tariff=$tariff[2];
+
+                    if (preg_match("/(deinterlace=)(\d?)/",$extinf,$inf)) $ch_arr['params']['deinterlace']=$inf[2];
+                    if (preg_match("/(tvg-shift=)(-?\d?)/",$extinf,$inf)) $ch_arr['params']['tvg-shift']=$inf[2];
+
+                    preg_match("/^udp:\/\/@(.*):(\d*)$/m",$urlstr,$ch_url);
+
+                    $ch_arr['name']=end(explode(',',$extinf));
+                    $ch_arr['maddr']=$ch_url[1];
+                    $ch_arr['mport']=$ch_url[2];
+                    $pos++;
+                    $channels[]=$ch_arr;
+                }
+                $pos++;
+            }
+            fclose($handle);
+            return $channels;
+        }
     }
 
 } 
