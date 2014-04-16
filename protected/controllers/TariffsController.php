@@ -53,8 +53,7 @@ class TariffsController extends CController{
         if (isset($_POST['deleteTid'])&&($_POST['deleteTid'])!=''){
             if ((int)$_POST['deleteTid']==$tariff->id)
                 if ($tariff->delete()){
-                    //TODO: Грамотное Удаление!!!
-                    //TvpackList::model()->deleteAllByAttributes(array('id_tvpack'=>$tariff->id));
+                    TvpackList::model()->deleteAllByAttributes(array('id_tvpack'=>$tariff->id));
                     $this->redirect(array("index"));
                 }
 

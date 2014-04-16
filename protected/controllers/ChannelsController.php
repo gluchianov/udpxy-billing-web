@@ -40,23 +40,33 @@ class ChannelsController extends CController{
         if (isset($_POST['deleteChId'])&&($_POST['deleteChId'])!=''){
             $ch=Channels::model()->findByPk((int)$_POST['deleteChId']);
             if ($ch->delete())
+                TvpackList::model()->deleteAllByAttributes(array('id_channel'=>(int)$_POST['deleteChId']));
                 $this->redirect(array('index'));
         }
 
         if (isset($_FILES['playlistfile'])){
             $channels=$this->ParseM3UPlaylist($_FILES['playlistfile']['tmp_name']);
             foreach ($channels as $channel){
+                $ch_id=$this->AddChannel($channel['name'],$channel['maddr'],$channel['mport'],json_encode($channel['params']));
                 if (isset($_POST['createTariffs'])&&($_POST['createTariffs']=='on')&&($channel['tariff']!='')&&($channel['tariff']!=NULL)){
-                    $tvpack=Tvpack::model()->findAllByAttributes(array('name'=>$channel['tariff']));
-                    if (count($tvpack)==0){
+                    $tvpack=Tvpack::model()->findByAttributes(array('name'=>$channel['tariff']));
+                    $tvpack_id=null;
+                    if ($tvpack==NULL){
                         $tariff = new Tvpack();
                         $tariff->name=$channel['tariff'];
                         $tariff->descr=$channel['tariff'];
                         $tariff->save();
+                        $tvpack_id=$tariff->id;
+                    }else{
+                        $tvpack_id=$tvpack->id;
                     }
+                    var_dump($tvpack_id);
+                    $tvassoc=new TvpackList();
+                    $tvassoc->id_channel= $ch_id;
+                    $tvassoc->id_tvpack=$tvpack_id;
+                    $tvassoc->save();
                     //TODO: Добавление канала в добавленный пакет;
                 }
-                $this->AddChannel($channel['name'],$channel['maddr'],$channel['mport'],json_encode($channel['params']));
             }
         }
 
@@ -77,7 +87,7 @@ class ChannelsController extends CController{
                 $newchanel->params=$params;
                 $newchanel->save();
             }
-            return true;
+            return NULL;
         }else{
             $newchanel = new Channels();
             $newchanel->ch_name=$ch_name;
@@ -85,8 +95,8 @@ class ChannelsController extends CController{
             $newchanel->m_port=trim($m_port);
             $newchanel->params=$params;
             if($newchanel->save())
-                return true;
-            else return false;
+                return $newchanel->id;
+            else return NULL;
         }
     }
 

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 14 2014 г., 12:48
+-- Время создания: Апр 16 2014 г., 13:24
 -- Версия сервера: 5.6.15-log
 -- Версия PHP: 5.5.6
 
@@ -53,16 +53,9 @@ CREATE TABLE IF NOT EXISTS `channels` (
   `ch_name` varchar(32) NOT NULL,
   `m_ip` varchar(15) NOT NULL,
   `m_port` smallint(5) unsigned NOT NULL,
+  `params` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Дамп данных таблицы `channels`
---
-
-INSERT INTO `channels` (`id`, `ch_name`, `m_ip`, `m_port`) VALUES
-(1, 'НТВ+ Теннис', '233.191.133.14', 1234),
-(3, 'Первый канал', '238.1.1.131', 1234);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1985 ;
 
 -- --------------------------------------------------------
 
@@ -151,15 +144,20 @@ CREATE TABLE IF NOT EXISTS `tvpack` (
   `name` varchar(32) NOT NULL,
   `descr` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+-- --------------------------------------------------------
 
 --
--- Дамп данных таблицы `tvpack`
+-- Структура таблицы `tvpack_list`
 --
 
-INSERT INTO `tvpack` (`id`, `name`, `descr`) VALUES
-(1, 'Тест', 'Тестовый тариф'),
-(2, 'FreeTV', 'Свободные каналы');
+CREATE TABLE IF NOT EXISTS `tvpack_list` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_tvpack` int(10) unsigned NOT NULL,
+  `id_channel` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=125 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
