@@ -36,8 +36,31 @@ class TariffsController extends CController{
         $this->render('index',array('tariffs'=>$tariffs));
     }
     public function actionDetail(){
+
+        //Add free channels to tvpack
+        if (isset($_POST['chaddids'])&&(count($_POST['chaddids'])>0)){
+            foreach ($_POST['chaddids'] as $chid){
+                $tvaccos=new TvpackList();
+                $tvaccos->id_channel=(int)$chid;
+                $tvaccos->id_tvpack=(int)$_GET['id'];
+                $tvaccos->save();
+            }
+        }
+
+        //Удаление канала из тарифа
+        if (isset($_POST['deleteChId'])&&($_POST['deleteChId'])!=''){
+            TvpackList::model()->deleteAllByAttributes(array('id_channel'=>(int)$_POST['deleteChId']));
+        }
+
         $tariff=Tvpack::model()->with(array('channels'))->findByPk((int)$_GET['id']);
         if ($tariff==NULL) $this->redirect(array('index'));
+
+        $criteria= new CDbCriteria();
+        $criteria->with=array('tvpackids');
+        $criteria->condition='tvpackids.id_tvpack<>:idtvpack';
+        $criteria->params=array(':idtvpack'=>(int)$_GET['id']);
+        $freeChannels=Channels::model()->findAll($criteria);
+        $chlist=CHtml::listData($freeChannels,'id','ch_name');
 
         //----------------Управление тарифом----------------
         if (isset($_POST['newName'])&&($_POST['newName'])!=''){
@@ -58,7 +81,8 @@ class TariffsController extends CController{
                 }
 
         }
-        $this->render('detail',array('tariff'=>$tariff));
+
+        $this->render('detail',array('tariff'=>$tariff,'chlist'=>$chlist));
     }
 
 } 

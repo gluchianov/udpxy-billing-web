@@ -7,7 +7,7 @@
             <td>
                 <form action="" method="POST">
                     <input type="hidden" name="deleteChId" value="<?php echo $ch->id; ?>">
-                    <?php echo CHtml::button('Удалить канал из тарифа', array('submit' =>Yii::app()->createUrl("tariffs/detail",array("id" => $tariff->id)), 'confirm'=>'Вы ТОЧНО желаете удалить канал "'.$ch->ch_name.'" ?', 'name'=>'accept')); ?>
+                    <?php echo CHtml::button('Удалить канал из тарифа', array('submit' =>Yii::app()->createUrl("tariffs/detail",array("id" => $tariff_id)), 'confirm'=>'Вы ТОЧНО желаете удалить канал "'.$ch->ch_name.'" ?', 'name'=>'accept')); ?>
                 </form>
             </td>
         </tr>

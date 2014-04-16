@@ -48,6 +48,7 @@ class Channels extends CActiveRecord
 		return array(
             'tariffs'=>array(self::MANY_MANY, 'Tariff',
                 'tvpack_list(id_channel, id_tvpack)'),
+            'tvpackids'=>array(self::HAS_MANY, 'TvpackList', 'id_channel'),
 		);
 	}
 
