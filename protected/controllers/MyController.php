@@ -66,18 +66,24 @@ class MyController extends CController{
         foreach($allowed_list as $allowed){ $packlist[]=$allowed->id_tvpack; }
         $packlist=array_unique($packlist);
 
-        $criteria=new CDbCriteria();
+        $channelslist=array();
         foreach ($packlist as $packid){
-            $criteria->compare('id_tvpack',$packid,false,"OR");
+            $channels=Tvpack::model()->with(array('channels'))->findByPk($packid)->channels;
+            foreach ($channels as $channel){
+                $channelslist[$channel->id]=$channel;
+            }
         }
-        $chanells=TvpackList::model()->findAll($criteria);
+
 
         //ob_start();
 
 echo "#EXTM3U cache=1000 deinterlace=7 url-tvg=\"http://tv.sevstar.net/tvprog.zip\" tvg-shift=0 m3uautoload=1
-
 ";
-
+    foreach ($channelslist as $channel){
+echo '
+#EXTINF:-1 tvg-name="'.str_replace(' ','_',$channel['ch_name']).'" tvg-logo="'.$channel['ch_name'].'" ,'.$channel['ch_name'].'
+http://'.Yii::app()->params['udpxy_host'].':'.Yii::app()->params['udpxy_port'].'/udp/'.$channel['m_ip'].':'.$channel['m_port'];
+    }
 
         //ob_end_flush();
 

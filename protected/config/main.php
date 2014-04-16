@@ -51,7 +51,7 @@ return array(
     ),
     'params'=>array(
         'liteDbFile'=>'db/database.txt',
-        'udpxy_host'=>'localhost',
-        'udpxy_port'=>80,
+        'udpxy_host'=>'iptv.baydarlan.net',
+        'udpxy_port'=>8080,
     ),
 );
