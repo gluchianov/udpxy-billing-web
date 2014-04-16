@@ -28,11 +28,7 @@ class ChannelsController extends CController{
             (isset($_POST['newChIP'])&&($_POST['newChIP']))&&
             (isset($_POST['newChPort'])&&($_POST['newChPort']))){
 
-            $newchanel=new Channels();
-            $newchanel->ch_name=$_POST['newChName'];
-            $newchanel->m_ip=$_POST['newChIP'];
-            $newchanel->m_port=$_POST['newChPort'];
-            if($newchanel->save())
+            if($this->AddChannel($_POST['newChName'],$_POST['newChIP'],$_POST['newChPort'],json_encode(array())));
                 $this->redirect(array('index'));
         }
 
@@ -50,12 +46,7 @@ class ChannelsController extends CController{
         if (isset($_FILES['playlistfile'])){
             $channels=$this->ParseM3UPlaylist($_FILES['playlistfile']['tmp_name']);
             foreach ($channels as $channel){
-                $newchanel=new Channels();
-                $newchanel->ch_name=$channel['name'];
-                $newchanel->m_ip=$channel['maddr'];
-                $newchanel->m_port=$channel['mport'];
-                $newchanel->params=json_encode($channel['params']);
-                $newchanel->save();
+                $this->AddChannel($channel['name'],$channel['maddr'],$channel['mport'],json_encode($channel['params']));
             }
         }
 
@@ -63,6 +54,30 @@ class ChannelsController extends CController{
 
         $this->render('index',array('chanells'=>$chanells));
 
+    }
+
+    private function AddChannel($ch_name,$m_ip,$m_port,$params){
+        $ch_name=str_replace(array("\r\n", "\r", "\n"),'', trim($ch_name));
+        $channels=Channels::model()->findAllByAttributes(array('ch_name'=>$ch_name));
+        if (count($channels)!=0){
+            foreach ($channels as $newchanel){
+                $newchanel->ch_name=$ch_name;
+                $newchanel->m_ip=str_replace(array("\r\n", "\r", "\n"),'', trim($m_ip));
+                $newchanel->m_port=trim($m_port);
+                $newchanel->params=$params;
+                $newchanel->save();
+            }
+            return true;
+        }else{
+            $newchanel = new Channels();
+            $newchanel->ch_name=$ch_name;
+            $newchanel->m_ip=str_replace(array("\r\n", "\r", "\n"),'', trim($m_ip));
+            $newchanel->m_port=trim($m_port);
+            $newchanel->params=$params;
+            if($newchanel->save())
+                return true;
+            else return false;
+        }
     }
 
     private function ParseM3UPlaylist($filepath){
@@ -83,6 +98,7 @@ class ChannelsController extends CController{
 
                     if (preg_match("/(group-title=\")(.*?)\"/",$extinf,$tariff)) $cur_tariff=$tariff[2];
 
+                    $ch_arr['params']=array();
                     if (preg_match("/(deinterlace=)(\d?)/",$extinf,$inf)) $ch_arr['params']['deinterlace']=$inf[2];
                     if (preg_match("/(tvg-shift=)(-?\d?)/",$extinf,$inf)) $ch_arr['params']['tvg-shift']=$inf[2];
 

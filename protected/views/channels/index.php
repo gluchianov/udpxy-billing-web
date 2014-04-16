@@ -14,14 +14,16 @@
         </tr>
     </table>
     <h4 style="margin: 5px;">Добавление каналов из плейлиста:</h4>
-    <table class="formpadding" style="width: 100%">
+    <table class="formpadding" style="width: 100%; border-bottom: 1px solid darkslategray;">
         <tr>
             <form enctype="multipart/form-data" action="" method="POST">
-                <td style="width: 250px;">Выберите файл плейлиста M3U:</td>
-                <td>
-                    <input name="playlistfile" type="file" />
+                <td>M3U файл:
+                    <input style="display: inline;" name="playlistfile" type="file" />
                 </td>
-                <td style="text-align: right">
+                <td style="width: 250px;">Создавать тарифы:
+                    <input name="createTariffs" type="checkbox" value="0">
+                </td>
+                <td style="width: 150px; text-align: right">
                     <input type="submit" name="submit" value="Обработать" />
                 </td>
             </form>
