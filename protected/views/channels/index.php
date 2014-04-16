@@ -21,7 +21,7 @@
                     <input style="display: inline;" name="playlistfile" type="file" />
                 </td>
                 <td style="width: 250px;">Создавать тарифы:
-                    <input name="createTariffs" type="checkbox" value="0">
+                    <input name="createTariffs" type="checkbox">
                 </td>
                 <td style="width: 150px; text-align: right">
                     <input type="submit" name="submit" value="Обработать" />

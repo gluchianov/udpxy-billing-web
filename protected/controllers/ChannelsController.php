@@ -46,6 +46,16 @@ class ChannelsController extends CController{
         if (isset($_FILES['playlistfile'])){
             $channels=$this->ParseM3UPlaylist($_FILES['playlistfile']['tmp_name']);
             foreach ($channels as $channel){
+                if (isset($_POST['createTariffs'])&&($_POST['createTariffs']=='on')&&($channel['tariff']!='')&&($channel['tariff']!=NULL)){
+                    $tvpack=Tvpack::model()->findAllByAttributes(array('name'=>$channel['tariff']));
+                    if (count($tvpack)==0){
+                        $tariff = new Tvpack();
+                        $tariff->name=$channel['tariff'];
+                        $tariff->descr=$channel['tariff'];
+                        $tariff->save();
+                    }
+                    //TODO: Добавление канала в добавленный пакет;
+                }
                 $this->AddChannel($channel['name'],$channel['maddr'],$channel['mport'],json_encode($channel['params']));
             }
         }
@@ -105,6 +115,7 @@ class ChannelsController extends CController{
                     preg_match("/^udp:\/\/@(.*):(\d*)$/m",$urlstr,$ch_url);
 
                     $ch_arr['name']=end(explode(',',$extinf));
+                    $ch_arr['tariff']=$cur_tariff;
                     $ch_arr['maddr']=$ch_url[1];
                     $ch_arr['mport']=$ch_url[2];
                     $pos++;
