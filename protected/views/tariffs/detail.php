@@ -36,3 +36,10 @@
         </tr>
     </tbody>
 </table>
+<br />
+<h4>Список каналов:</h4>
+<?php
+$this->renderPartial('_channels',array(
+    'channels'=>$tariff->channels,
+));
+?>

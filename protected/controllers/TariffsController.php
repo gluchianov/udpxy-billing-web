@@ -36,7 +36,7 @@ class TariffsController extends CController{
         $this->render('index',array('tariffs'=>$tariffs));
     }
     public function actionDetail(){
-        $tariff=Tvpack::model()->findByPk((int)$_GET['id']);
+        $tariff=Tvpack::model()->with(array('channels'))->findByPk((int)$_GET['id']);
         if ($tariff==NULL) $this->redirect(array('index'));
 
         //----------------Управление тарифом----------------
@@ -58,8 +58,7 @@ class TariffsController extends CController{
                 }
 
         }
-
-        $this->render('detail',array('tariff'=>$tariff,'chanells'=>$chanells));
+        $this->render('detail',array('tariff'=>$tariff));
     }
 
 } 
