@@ -36,6 +36,11 @@ class ChannelsController extends CController{
                 $this->redirect(array('index'));
         }
 
+        if (isset($_POST['clearchannels'])&&($_POST['clearchannels']==1)){
+            if (Channels::model()->deleteAll())
+                $this->redirect(array('index'));
+        }
+
         if (isset($_POST['deleteChId'])&&($_POST['deleteChId'])!=''){
             $ch=Channels::model()->findByPk((int)$_POST['deleteChId']);
             if ($ch->delete())

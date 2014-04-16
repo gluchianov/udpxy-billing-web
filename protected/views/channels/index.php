@@ -27,6 +27,18 @@
             </form>
         </tr>
     </table>
+    <table class="formpadding" style="width: 100%">
+        <tr>
+            <form action="" method="POST">
+                <td style="width: 1px;">
+                    <input name="clearchannels" type="hidden" value="1" />
+                </td>
+                <td>
+                    <input type="submit" name="submit" value="Очистить список каналов!" />
+                </td>
+            </form>
+        </tr>
+    </table>
 </div>
 
 <table class="table .table-responsive table-striped table-bordered">
