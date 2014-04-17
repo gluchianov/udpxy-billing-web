@@ -14,6 +14,9 @@ class CheckerController extends CController{
             ($_GET['cmd']!='check'))
                 echo self::UDPXY_RESPONSE_DENY;
         else {
+            //Check orders for topicality
+            Orders::model()->CheckOrders();
+
             //Select all active orders for current client
             $criteria=new CDbCriteria();
             $criteria->select=array('id_tvpack');
@@ -30,16 +33,19 @@ class CheckerController extends CController{
             $active_orders=Orders::model()->findAll($criteria);
 
             //Check exist current channel in active orders
-            $criteria = new CDbCriteria();
-            $criteria->with=array('tvpackids');
-            $criteria->compare('m_ip',$_GET['maddr']);
-            $criteria->compare('m_port',$_GET['mport']);
+            $channels_count=0;
+            if (count($active_orders)>0){
+                $criteria = new CDbCriteria();
+                $criteria->with=array('tvpackids');
+                $criteria->compare('m_ip',$_GET['maddr']);
+                $criteria->compare('m_port',$_GET['mport']);
 
-            $criteria2 = new CDbCriteria();
-            foreach ($active_orders as $order)
-                $criteria2->compare('tvpackids.id_tvpack',$order->id_tvpack,false,"OR");
-            $criteria->mergeWith($criteria2);
-            $channels_count=Channels::model()->count($criteria);
+                $criteria2 = new CDbCriteria();
+                foreach ($active_orders as $order)
+                    $criteria2->compare('tvpackids.id_tvpack',$order->id_tvpack,false,"OR");
+                $criteria->mergeWith($criteria2,'AND');
+                $channels_count=Channels::model()->count($criteria);
+            }
 
             if ($channels_count>0) echo self::UDPXY_RESPONSE_ACCEPT;
             else echo self::UDPXY_RESPONSE_DENY;

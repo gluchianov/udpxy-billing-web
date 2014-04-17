@@ -35,8 +35,6 @@ class Orders extends CActiveRecord
 			array('id_user, id_allowed, id_tvpack, start_date, end_date, status, start_operator, end_operator', 'required'),
 			array('status', 'numerical', 'integerOnly'=>true),
 			array('id_user, id_allowed, id_tvpack, start_operator, end_operator', 'length', 'max'=>10),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
 			array('id, id_user, id_allowed, id_tvpack, start_date, end_date, status, start_operator, end_operator', 'safe', 'on'=>'search'),
 		);
 	}
@@ -118,27 +116,8 @@ class Orders extends CActiveRecord
 	}
 //--------------------- My Methods ------------------------------------------
 
-    /**
-     * Check orders function.
-     */
-/*
+    /** Check actual orders function. */
     public static function CheckOrders(){
-        $criteria = new CDbCriteria();
-        $criteria->compare('status',1);
-        $criteria->AddCondition('end_date<NOW()');
-        $cl_order=Orders::model()->findAll($criteria);
-        foreach ($cl_order as $cl)
-            $this->StopOrder($cl->id);
+        Orders::model()->updateAll(array('status'=>0,'end_date'=>date("Y-m-d H:i:s"),'end_operator'=>0),'(status=1) AND (end_date<NOW())');
     }
-
-    private function StopOrder($id,$end_operator_id=65000){
-        $del_order=Orders::model()->findByPk($id);
-        $del_order->status=0;
-        $del_order->end_date=date("Y-m-d H:i:s");
-        $del_order->end_operator=$end_operator_id;
-        if ($del_order->save())
-            return true;
-        else return false;
-    }
-*/
 }
