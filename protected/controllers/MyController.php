@@ -13,45 +13,19 @@ class MyController extends CController{
 
     public function actionGetPlaylist(){
 
-        $packlist=array();
-
-        $criteria=new CDbCriteria();
-        $criteria->addCondition('ip=:claddr');
-        $criteria->params=array(':claddr'=>$this->GetRealIp());
-        $user=Clients::model()->find($criteria);
-
-        $criteria=new CDbCriteria();
-        $criteria->select='id_tvpack';
-        $criteria->addCondition('start_date<=NOW() AND end_date>=NOW()');
-        $criteria->compare('status',1);
-        $criteria->compare('id_user',$user->id);
-        $criteria->compare('id_allowed',0);
-        $orders=Orders::model()->findAll($criteria);
-        foreach($orders as $order){ $packlist[]=$order->id_tvpack; }
-
-        $criteria=new CDbCriteria();
-        $criteria->select=array('id_tvpack');
-        $criteria->addCondition('INET_ATON(allowed.ip_start)<=:claddr');
-        $criteria->addCondition('INET_ATON(allowed.ip_end)>=:claddr');
-        $criteria->params=array(':claddr'=>ip2long($this->GetRealIp()));
-        $criteria->with=array('allowed');
-        $criteria->together=true;
-        $allowed_list=Orders::model()->findAll($criteria);
-        foreach($allowed_list as $allowed){ $packlist[]=$allowed->id_tvpack; }
-        $packlist=array_unique($packlist);
+        $active_packs=Orders::model()->GetActiveOrders(Yii::app()->request->getUserHostAddress(),Orders::GET_ALLINFO,'id_tvpack');
 
         $channelslist=array();
-        foreach ($packlist as $packid){
-            $channels=Tvpack::model()->with(array('channels'))->findByPk($packid)->channels;
+        foreach ($active_packs as $packid){
+            $channels=Tvpack::model()->with(array('channels'))->findByPk($packid->id_tvpack)->channels;
             foreach ($channels as $channel){
                 $channelslist[$channel->id]=$channel;
             }
         }
 
+        ob_start();
 
-        //ob_start();
-
-echo "#EXTM3U cache=1000 deinterlace=7 url-tvg=\"http://tv.sevstar.net/tvprog.zip\" tvg-shift=0 m3uautoload=1
+echo "#EXTM3U cache=1000 deinterlace=7 url-tvg=\"".Yii::app()->params['tv_program_url']."\" tvg-shift=0 m3uautoload=1
 ";
         $pstr='';
     foreach ($channelslist as $channel){
@@ -61,10 +35,13 @@ echo "#EXTM3U cache=1000 deinterlace=7 url-tvg=\"http://tv.sevstar.net/tvprog.zi
 echo '
 #EXTINF:-1 '.$pstr.' tvg-name="'.str_replace(' ','_',$channel['ch_name']).'" tvg-logo="'.$channel['ch_name'].'" ,'.$channel['ch_name'].'
 http://'.Yii::app()->params['udpxy_host'].':'.Yii::app()->params['udpxy_port'].'/udp/'.$channel['m_ip'].':'.$channel['m_port'];
-$pstr='';
+        $pstr='';
     }
 
-        //ob_end_flush();
+        header("Content-Disposition: attachment; filename=iptv_playlist.m3u");
+        header("Contenr-type: application/octet-stream");
+        header("Content-length: ".ob_get_length());
+        ob_end_flush();
 
 
 

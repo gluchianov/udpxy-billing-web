@@ -129,9 +129,10 @@ class Orders extends CActiveRecord
      * Select all active orders for current client
      * @param string $client_ip Client IP Address
      * @param int $return_type Types of return result
+     * @param string $groupby Group by column name
      * @return CActiveRecord[] All finded active orders
      */
-    public function GetActiveOrders($client_ip='',$return_type=self::GET_ALLINFO){
+    public function GetActiveOrders($client_ip='',$return_type=self::GET_ALLINFO,$groupby=''){
 
         switch ($return_type){
             case self::GET_ONLYUSER: $with_array=array('user'); break;
@@ -141,6 +142,7 @@ class Orders extends CActiveRecord
 
         $criteria=new CDbCriteria();
         $criteria->with=$with_array;
+        if($groupby!='') $criteria->group=$groupby;
         $criteria->addCondition('start_date<=NOW() AND end_date>=NOW()');
         $criteria->addCondition('status=1');
 
