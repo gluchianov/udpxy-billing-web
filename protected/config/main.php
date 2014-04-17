@@ -44,10 +44,9 @@ return array(
 		),
 	),
     'modules'=>array(
-
+        //Modules
     ),
     'params'=>array(
-        'liteDbFile'=>'db/database.txt',
         'udpxy_host'=>'iptv.baydarlan.net',
         'udpxy_port'=>8080,
         'tv_program_url'=>'http://tv.sevstar.net/tvprog.zip',

@@ -60,12 +60,11 @@ class ChannelsController extends CController{
                     }else{
                         $tvpack_id=$tvpack->id;
                     }
-                    var_dump($tvpack_id);
                     $tvassoc=new TvpackList();
                     $tvassoc->id_channel= $ch_id;
                     $tvassoc->id_tvpack=$tvpack_id;
                     $tvassoc->save();
-                    //TODO: Добавление канала в добавленный пакет;
+
                 }
             }
         }
