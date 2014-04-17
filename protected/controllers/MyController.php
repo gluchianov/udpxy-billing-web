@@ -79,10 +79,15 @@ class MyController extends CController{
 
 echo "#EXTM3U cache=1000 deinterlace=7 url-tvg=\"http://tv.sevstar.net/tvprog.zip\" tvg-shift=0 m3uautoload=1
 ";
+        $pstr='';
     foreach ($channelslist as $channel){
+        foreach (json_decode($channel->params) as $pkey=>$param)
+            $pstr.=$pkey.'="'.$param.'" ';
+
 echo '
-#EXTINF:-1 tvg-name="'.str_replace(' ','_',$channel['ch_name']).'" tvg-logo="'.$channel['ch_name'].'" ,'.$channel['ch_name'].'
+#EXTINF:-1 '.$pstr.' tvg-name="'.str_replace(' ','_',$channel['ch_name']).'" tvg-logo="'.$channel['ch_name'].'" ,'.$channel['ch_name'].'
 http://'.Yii::app()->params['udpxy_host'].':'.Yii::app()->params['udpxy_port'].'/udp/'.$channel['m_ip'].':'.$channel['m_port'];
+$pstr='';
     }
 
         //ob_end_flush();
