@@ -8,7 +8,7 @@
     </tr></thead>
     <tbody>
     <?php
-    if ($allowed_list==NULL){echo '<tr><td colspan="3" style="text-align: center">Нет активных подписок</td></tr>';}
+    if ($allowed_list==NULL){echo '<tr><td colspan="4" style="text-align: center">Нет активных подписок</td></tr>';}
     else
         foreach ($allowed_list as $allowed){ ?>
             <tr>

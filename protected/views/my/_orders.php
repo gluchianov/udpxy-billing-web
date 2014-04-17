@@ -8,7 +8,7 @@
     </tr></thead>
     <tbody>
     <?php
-    if ($orders==NULL){echo '<tr><td colspan="3" style="text-align: center">Нет активных подписок</td></tr>';}
+    if ($orders==NULL){echo '<tr><td colspan="4" style="text-align: center">Нет активных подписок</td></tr>';}
     else
         foreach ($orders as $order){ ?>
             <tr>

@@ -90,10 +90,14 @@ class OrdersController extends CController
             $tmp=Tvpack::model()->findByPk($arch_order->id_tvpack);
             if ($tmp!=NULL) $tmp=$tmp->name;
             else $tmp='неизвестный тариф';
+
+            if ($arch_order->end_operator==0) $end_operator='Система';
+            else $end_operator=Operator::model()->findByPk($arch_order->end_operator)->name;
+
             $archive_orders_arr[]=array(
               'tariff'=>$tmp,
               'start_operator'=>Operator::model()->findByPk($arch_order->start_operator)->name,
-              'end_operator'=>Operator::model()->findByPk($arch_order->end_operator)->name,
+              'end_operator'=>$end_operator,
               'ord_data'=>$arch_order,
             );
         }
