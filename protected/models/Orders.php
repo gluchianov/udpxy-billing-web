@@ -51,6 +51,7 @@ class Orders extends CActiveRecord
 		return array(
             'tvpack'   => array(self::BELONGS_TO, 'TvPack', 'id_tvpack'),
             'allowed'   => array(self::BELONGS_TO, 'AllowedList', 'id_allowed'),
+            'user'      => array(self::BELONGS_TO, 'Clients', 'id_user'),
 		);
 	}
 
@@ -115,4 +116,29 @@ class Orders extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+//--------------------- My Methods ------------------------------------------
+
+    /**
+     * Check orders function.
+     */
+/*
+    public static function CheckOrders(){
+        $criteria = new CDbCriteria();
+        $criteria->compare('status',1);
+        $criteria->AddCondition('end_date<NOW()');
+        $cl_order=Orders::model()->findAll($criteria);
+        foreach ($cl_order as $cl)
+            $this->StopOrder($cl->id);
+    }
+
+    private function StopOrder($id,$end_operator_id=65000){
+        $del_order=Orders::model()->findByPk($id);
+        $del_order->status=0;
+        $del_order->end_date=date("Y-m-d H:i:s");
+        $del_order->end_operator=$end_operator_id;
+        if ($del_order->save())
+            return true;
+        else return false;
+    }
+*/
 }
