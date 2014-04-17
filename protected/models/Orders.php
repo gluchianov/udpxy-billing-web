@@ -16,6 +16,10 @@
  */
 class Orders extends CActiveRecord
 {
+    const GET_ALLINFO=0;
+    const GET_ONLYUSER=1;
+    const GET_ONLYALLOWED=2;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -120,4 +124,33 @@ class Orders extends CActiveRecord
     public static function CheckOrders(){
         Orders::model()->updateAll(array('status'=>0,'end_date'=>date("Y-m-d H:i:s"),'end_operator'=>0),'(status=1) AND (end_date<NOW())');
     }
+
+    /**
+     * Select all active orders for current client
+     * @param string $client_ip Client IP Address
+     * @param int $return_type Types of return result
+     * @return CActiveRecord[] All finded active orders
+     */
+    public function GetActiveOrders($client_ip='',$return_type=self::GET_ALLINFO){
+
+        switch ($return_type){
+            case self::GET_ONLYUSER: $with_array=array('user'); break;
+            case self::GET_ONLYALLOWED: $with_array=array('allowed'); break;
+            default: $with_array=array('user','allowed'); break;
+        }
+
+        $criteria=new CDbCriteria();
+        $criteria->with=$with_array;
+        $criteria->addCondition('start_date<=NOW() AND end_date>=NOW()');
+        $criteria->addCondition('status=1');
+
+        $criteria2= new CDbCriteria();
+        if ($return_type!=self::GET_ONLYALLOWED) $criteria2->addCondition('user.ip=:claddr');
+        if ($return_type!=self::GET_ONLYUSER) $criteria2->addCondition('INET_ATON(allowed.ip_start)<=INET_ATON(:claddr) AND INET_ATON(allowed.ip_end)>=INET_ATON(:claddr)','OR');
+
+        $criteria->mergeWith($criteria2);
+        $criteria->params=array(':claddr'=>$client_ip);
+        return $this->findAll($criteria);
+    }
+
 }

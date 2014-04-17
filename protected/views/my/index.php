@@ -12,7 +12,7 @@
     <?php } ?>
     <tr>
         <td>IP адрес</td>
-        <td><?php echo $ip; ?></td>
+        <td><?php echo Yii::app()->request->getUserHostAddress(); ?></td>
     </tr>
 </table>
 <table class="table table-responsive table-striped table-bordered ">
@@ -30,14 +30,8 @@
     <span id="showallorders" class="btn btn-default">Показать список активных подписок</span>
 </div>
 <div id="allorders">
-<hr />
-<?php $this->renderPartial('_allowed',array(
-    'allowed_list'=>$allowed_list
-)); ?>
-</table>
-<?php $this->renderPartial('_orders',array(
-    'orders'=>$orders
-)); ?>
+<?php $this->renderPartial('_allowed',array('allowed_list'=>$allowed_list)); ?>
+<?php $this->renderPartial('_orders',array('orders'=>$orders)); ?>
 </div>
 <script>
     $('#showallorders').click(function(){

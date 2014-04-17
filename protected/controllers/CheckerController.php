@@ -18,19 +18,7 @@ class CheckerController extends CController{
             Orders::model()->CheckOrders();
 
             //Select all active orders for current client
-            $criteria=new CDbCriteria();
-            $criteria->select=array('id_tvpack');
-            $criteria->with=array('user','allowed');
-            $criteria->addCondition('start_date<=NOW() AND end_date>=NOW()');
-            $criteria->addCondition('status=1');
-
-            $criteria2= new CDbCriteria();
-            $criteria2->addCondition('user.ip=:claddr');
-            $criteria2->addCondition('INET_ATON(allowed.ip_start)<=INET_ATON(:claddr) AND INET_ATON(allowed.ip_end)>=INET_ATON(:claddr)','OR');
-
-            $criteria->mergeWith($criteria2);
-            $criteria->params=array(':claddr'=>$_GET['claddr']);
-            $active_orders=Orders::model()->findAll($criteria);
+            $active_orders=Orders::model()->GetActiveOrders($_GET['claddr']);
 
             //Check exist current channel in active orders
             $channels_count=0;

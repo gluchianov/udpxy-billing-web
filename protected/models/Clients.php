@@ -100,4 +100,9 @@ class Clients extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+    //--------------------- My Methods ------------------------------------------
+
+    public function GetClientByIP($ip_address=''){
+        return $this->findByAttributes(array('ip'=>$ip_address));
+    }
 }

@@ -68,4 +68,4 @@
 }
 .formpadding td{padding: 5px;}
 
-#allorders{ display: none;}
+#allorders{ display: none; border-top: 2px solid #eee;}
