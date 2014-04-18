@@ -9,17 +9,9 @@
                 else echo '<span class="no">PROBLEM</span>';
             ?></td>
         </tr>
-        <tr>
-            <td>Последняя активность:</td>
-            <td><?php echo date("d/m/Y H:i:s",$lastact); ?></td>
-        </tr>
         <!--- На будущее
         <tr>
             <td>Клиентов всего:</td>
-            <td>0</td>
-        </tr>
-        <tr>
-            <td>Клиентов активно:</td>
             <td>0</td>
         </tr>
         --->

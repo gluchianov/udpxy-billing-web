@@ -34,14 +34,7 @@ class SiteController extends CController
         {  fclose($fp); $udpxy_status=true; }
         else $udpxy_status=false;
 
-
-        //Get last request time on UdpXY
-        $litedb = new LiteTextDb();
-        $udpxy_lastact=$litedb->get_value('udpxy_lastact');
-
-
-
-		$this->render('index',array('lastact'=>$udpxy_lastact, 'status'=>$udpxy_status));
+		$this->render('index',array('status'=>$udpxy_status));
 	}
 	
 	public function actionError()

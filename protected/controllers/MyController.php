@@ -8,7 +8,7 @@ class MyController extends CController{
         $active_allowed=Orders::model()->GetActiveOrders(Yii::app()->request->getUserHostAddress(),Orders::GET_ONLYALLOWED);
         //Get client info by address
         $userinfo=Clients::model()->GetClientByIP(Yii::app()->request->getUserHostAddress());
-        $this->render('index',array('allowed_list'=>$active_orders,'orders'=>$active_allowed,'user'=>$userinfo));
+        $this->render('index',array('allowed_list'=>$active_allowed,'orders'=>$active_orders,'user'=>$userinfo));
     }
 
     public function actionGetPlaylist(){
