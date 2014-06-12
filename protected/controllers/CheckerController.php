@@ -7,7 +7,7 @@ class CheckerController extends CController{
     const UDPXY_RESPONSE_DENY=0;
 
     public function actionIndex(){
-
+    
         if ((!isset($_GET['claddr']))||($_GET['claddr']=='')||
             (!isset($_GET['maddr']))||($_GET['maddr']=='')||
             (!isset($_GET['mport']))||($_GET['mport']=='')||
@@ -35,8 +35,8 @@ class CheckerController extends CController{
                 $channels_count=Channels::model()->count($criteria);
             }
 
-            if ($channels_count>0) echo self::UDPXY_RESPONSE_ACCEPT;
-            else echo self::UDPXY_RESPONSE_DENY;
+            if ($channels_count>0) echo '[['.self::UDPXY_RESPONSE_ACCEPT.']]';
+            else echo '[['.self::UDPXY_RESPONSE_DENY.']]';
         }
     }
 } 
