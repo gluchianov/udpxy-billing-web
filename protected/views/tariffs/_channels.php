@@ -2,8 +2,8 @@
     <?php foreach ($channels as $ch){ ?>
         <tr>
             <td><?php echo $ch->ch_name; ?></td>
-            <td><?php echo $ch->m_ip; ?></td>
-            <td><?php echo $ch->m_port; ?></td>
+            <td><?php echo $ch->stream_type; ?></td>
+            <td><?php echo $ch->stream_address; ?></td>
             <td>
                 <form action="" method="POST">
                     <input type="hidden" name="deleteChId" value="<?php echo $ch->id; ?>">

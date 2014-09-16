@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS `allowed_list` (
 CREATE TABLE IF NOT EXISTS `channels` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ch_name` varchar(32) NOT NULL,
-  `m_ip` varchar(15) NOT NULL,
-  `m_port` smallint(5) unsigned NOT NULL,
+  `stream_type` varchar(10) NOT NULL,
+  `stream_address` varchar(255) NOT NULL,
   `params` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

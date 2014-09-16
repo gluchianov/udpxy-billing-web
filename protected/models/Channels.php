@@ -1,17 +1,18 @@
 <?php
 
 /**
- * This is the model class for table "tvpack_list".
+ * This is the model class for table "channels".
  *
- * The followings are the available columns in table 'tvpack_list':
+ * The followings are the available columns in table 'channels':
  * @property string $id
  * @property string $ch_name
- * @property string $m_ip
- * @property integer $m_port
+ * @property string $stream_type
+ * @property string $stream_address
  * @property integer $params
  */
 class Channels extends CActiveRecord
 {
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -28,13 +29,13 @@ class Channels extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('ch_name, m_ip, m_port, params', 'required'),
-			array('m_port', 'numerical', 'integerOnly'=>true),
+			array('ch_name, stream_type, stream_address, params', 'required'),
 			array('ch_name', 'length', 'max'=>32),
-			array('m_ip', 'length', 'max'=>15),
+			array('stream_type', 'length', 'max'=>10),
+			array('stream_address', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, ch_name, m_ip, m_port, params', 'safe', 'on'=>'search'),
+			array('id, ch_name, stream_type, stream_address, params', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,8 +61,8 @@ class Channels extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'ch_name' => 'Ch Name',
-			'm_ip' => 'M Ip',
-			'm_port' => 'M Port',
+			'stream_type' => 'Stream Type',
+			'stream_address' => 'Stream Address',
             'params'=>'Params',
 		);
 	}
@@ -86,8 +87,8 @@ class Channels extends CActiveRecord
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('ch_name',$this->ch_name,true);
-		$criteria->compare('m_ip',$this->m_ip,true);
-		$criteria->compare('m_port',$this->m_port);
+		$criteria->compare('stream_type',$this->stream_type,true);
+		$criteria->compare('stream_address',$this->stream_address);
         $criteria->compare('params',$this->params);
 
 		return new CActiveDataProvider($this, array(

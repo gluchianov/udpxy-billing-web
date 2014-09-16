@@ -9,8 +9,8 @@ class CheckerController extends CController{
     public function actionIndex(){
     
         if ((!isset($_GET['claddr']))||($_GET['claddr']=='')||
-            (!isset($_GET['maddr']))||($_GET['maddr']=='')||
-            (!isset($_GET['mport']))||($_GET['mport']=='')||
+            (!isset($_GET['streamtype']))||($_GET['streamtype']=='')||
+            (!isset($_GET['streamaddress']))||($_GET['streamaddress']=='')||
             ($_GET['cmd']!='check'))
                 echo self::UDPXY_RESPONSE_DENY;
         else {
@@ -25,8 +25,8 @@ class CheckerController extends CController{
             if (count($active_orders)>0){
                 $criteria = new CDbCriteria();
                 $criteria->with=array('tvpackids');
-                $criteria->compare('m_ip',$_GET['maddr']);
-                $criteria->compare('m_port',$_GET['mport']);
+                $criteria->compare('stream_type',$_GET['streamtype']);
+                $criteria->compare('stream_address',$_GET['streamaddress']);
 
                 $criteria2 = new CDbCriteria();
                 foreach ($active_orders as $order)

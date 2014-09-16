@@ -57,7 +57,7 @@ class TariffsController extends CController{
 
         $criteria= new CDbCriteria();
         $criteria->with=array('tvpackids');
-        $criteria->condition='tvpackids.id_tvpack<>:idtvpack';
+        //Bug! Not display free channels: $criteria->condition='tvpackids.id_tvpack<>:idtvpack';
         $criteria->params=array(':idtvpack'=>(int)$_GET['id']);
         $freeChannels=Channels::model()->findAll($criteria);
         $chlist=CHtml::listData($freeChannels,'id','ch_name');

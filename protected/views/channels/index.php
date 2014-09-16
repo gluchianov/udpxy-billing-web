@@ -5,30 +5,20 @@
             <form action="" method="POST">
                 <td>Название канала: </td>
                 <td> <input type="text" name="newChName" value="" maxlength="32"  /></td>
-                <td>IP адрес: </td>
-                <td><input type="text" name="newChIP" value="" maxlength="15"  /></td>
-                <td>Порт: </td>
-                <td><input type="text" name="newChPort" value="" size="5" maxlength="5"  /></td>
+                <td>
+				<select size="1" name="newChType">
+					<option disabled>Выберите тип</option>
+					<option value="UDP" selected>UDP</option>
+					<option value="HTTP">HTTP</option>
+			   </select>
+				</td>
+                <td>Адрес потока: </td>
+                <td><input type="text" name="newChAddress" value="" size="20" maxlength="255"  /></td>
                 <td colspan="2"><input type="submit" name="newChSubmit" value="Добавить канал" /></td>
             </form>
         </tr>
     </table>
-    <h4 style="margin: 5px;">Добавление каналов из плейлиста:</h4>
-    <table class="formpadding" style="width: 100%; border-bottom: 1px solid darkslategray;">
-        <tr>
-            <form enctype="multipart/form-data" action="" method="POST">
-                <td>M3U файл:
-                    <input style="display: inline;" name="playlistfile" type="file" />
-                </td>
-                <td style="width: 250px;">Создавать тарифы:
-                    <input name="createTariffs" type="checkbox">
-                </td>
-                <td style="width: 150px; text-align: right">
-                    <input type="submit" name="submit" value="Обработать" />
-                </td>
-            </form>
-        </tr>
-    </table>
+    
     <table class="formpadding" style="width: 100%">
         <tr>
             <form action="" method="POST">
@@ -47,8 +37,8 @@
 <?php foreach ($chanells as $ch){ ?>
 <tr>
     <td><?php echo $ch->ch_name; ?></td>
-    <td><?php echo $ch->m_ip; ?></td>
-    <td><?php echo $ch->m_port; ?></td>
+    <td><?php echo $ch->stream_type; ?></td>
+    <td><?php echo $ch->stream_address; ?></td>
     <td>
         <form action="" method="POST">
             <input type="hidden" name="deleteChId" value="<?php echo $ch->id; ?>">
