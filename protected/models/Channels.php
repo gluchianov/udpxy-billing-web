@@ -106,4 +106,35 @@ class Channels extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    /**
+     * Add channel to database
+     * @param $ch_name Channel name
+     * @param $stream_type HTTP or UDP
+     * @param $stream_address Stream url
+     * @param $params
+     * @return null|integer NULL or ID
+     */
+    public function AddChannel($ch_name,$stream_type,$stream_address,$params){
+        $ch_name=str_replace(array("\r\n", "\r", "\n"),'', trim($ch_name));
+        $channel=$this->findByAttributes(array('ch_name'=>$ch_name));
+        if ($channel!=NULL){
+            $channel->ch_name=$ch_name;
+            $channel->stream_type=trim($stream_type);
+            $channel->stream_address=str_replace(array("\r\n", "\r", "\n"),'', trim($stream_address));
+            $channel->params=$params;
+            $channel->save();
+            if($channel->save())
+                return $channel->id;
+        }else{
+            $newchanel = new Channels();
+            $newchanel->ch_name=$ch_name;
+            $newchanel->stream_type=trim($stream_type);
+            $newchanel->stream_address=str_replace(array("\r\n", "\r", "\n"),'', trim($stream_address));
+            $newchanel->params=$params;
+            if($newchanel->save())
+                return $newchanel->id;
+            else return NULL;
+        }
+    }
 }

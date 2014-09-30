@@ -26,6 +26,28 @@
             </td>
         </tr>
         <tr>
+            <form enctype="multipart/form-data" action="" method="POST">
+                <td>Добавить каналы из Плейлиста SevStar:</td>
+                <td>
+                    <input style="display: inline;" name="playlistfile" type="file" />
+                    <input type="hidden" name="tariffId" value="<?php echo $tariff->id; ?>">
+                    <input type="submit" name="submit" value="Обработать" />
+                </td>
+            </form>
+        </tr>
+        <tr>
+            <form action="" method="POST">
+                <td>
+                    Очистить список каналов пакета
+                </td>
+                <td>
+                    <input name="clearchannels" type="hidden" value="1" />
+                    <input type="hidden" name="tariffId" value="<?php echo $tariff->id; ?>">
+                    <input type="submit" name="submit" value="Очистить" />
+                </td>
+            </form>
+        </tr>
+        <tr>
             <td>Удалить тарифный план:</td>
             <td>
                 <form action="" method="POST">
@@ -37,20 +59,7 @@
     </tbody>
 </table>
 <br />
-<h4>Список каналов:</h4>
-<table style="width: 100%;">
-    <form action="" method="POST">
-    <tr>
-        <td style="width: 200px;">Добавление каналов:</td>
-        <td >
-            <?php echo CHtml::listBox('chaddids',null,$chlist,array('style'=>'width:90%;','multiple'=>'multiple')); ?>
-        </td>
-        <td>
-            <input name="submit" type="submit" value="Добавить каналы в тариф">
-        </td>
-    </tr>
-    </form>
-</table><br />
+
 <?php
 $this->renderPartial('_channels',array(
     'channels'=>$tariff->channels,

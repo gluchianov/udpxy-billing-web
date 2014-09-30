@@ -94,4 +94,24 @@ class TvpackList extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+    /**
+     * Add channel to TVPack
+     * @param $tariff_id TVPack ID
+     * @param $channel_id Channel ID
+     * @return null|string NULL or ID
+     */
+    public function AddChannel($tariff_id,$channel_id){
+        $channel=$this->findByAttributes(array('id_tvpack'=>(int)$tariff_id, 'id_channel'=>(int)$channel_id));
+        if ($channel!=NULL){
+            return $channel->id;
+        }else{
+            $newPackAssoc = new TvpackList();
+            $newPackAssoc->id_channel = (int)$channel_id;
+            $newPackAssoc->id_tvpack = (int)$tariff_id;
+            if($newPackAssoc->save())
+                return $newPackAssoc->id;
+            else return NULL;
+        }
+    }
 }

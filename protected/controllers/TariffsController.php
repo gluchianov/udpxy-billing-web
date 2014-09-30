@@ -37,14 +37,19 @@ class TariffsController extends CController{
     }
     public function actionDetail(){
 
-        //Add free channels to tvpack
-        if (isset($_POST['chaddids'])&&(count($_POST['chaddids'])>0)){
-            foreach ($_POST['chaddids'] as $chid){
-                $tvaccos=new TvpackList();
-                $tvaccos->id_channel=(int)$chid;
-                $tvaccos->id_tvpack=(int)$_GET['id'];
-                $tvaccos->save();
+        //Добавление каналов из плейлиста SevStar
+        if (isset($_FILES['playlistfile'])){
+            $sevstarplaylist = new SevStarPlaylist();
+            $channels=$sevstarplaylist->Parse($_FILES['playlistfile']['tmp_name']);
+            foreach ($channels as $channel){
+                $channel_id=Channels::model()->AddChannel($channel['name'],$channel['type'],$channel['address'],json_encode(array()));
+                TvpackList::model()->AddChannel($_POST['tariffId'],$channel_id);
             }
+        }
+
+        //Очистка списка каналов в тарифе
+        if (isset($_POST['clearchannels'])&&($_POST['clearchannels']==1)){
+            TvpackList::model()->deleteAll('id_tvpack=:id_tvpack',array(':id_tvpack'=>(int)$_POST['tariffId']));
         }
 
         //Удаление канала из тарифа
@@ -54,13 +59,6 @@ class TariffsController extends CController{
 
         $tariff=Tvpack::model()->with(array('channels'))->findByPk((int)$_GET['id']);
         if ($tariff==NULL) $this->redirect(array('index'));
-
-        $criteria= new CDbCriteria();
-        $criteria->with=array('tvpackids');
-        //Bug! Not display free channels: $criteria->condition='tvpackids.id_tvpack<>:idtvpack';
-        $criteria->params=array(':idtvpack'=>(int)$_GET['id']);
-        $freeChannels=Channels::model()->findAll($criteria);
-        $chlist=CHtml::listData($freeChannels,'id','ch_name');
 
         //----------------Управление тарифом----------------
         if (isset($_POST['newName'])&&($_POST['newName'])!=''){
@@ -79,10 +77,9 @@ class TariffsController extends CController{
                     TvpackList::model()->deleteAllByAttributes(array('id_tvpack'=>$tariff->id));
                     $this->redirect(array("index"));
                 }
-
         }
 
-        $this->render('detail',array('tariff'=>$tariff,'chlist'=>$chlist));
+        $this->render('detail',array('tariff'=>$tariff));
     }
 
 } 
