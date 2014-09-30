@@ -34,7 +34,13 @@ echo "#EXTM3U cache=1000 deinterlace=7 url-tvg=\"".Yii::app()->params['tv_progra
 
 echo '
 #EXTINF:-1 '.$pstr.' tvg-name="'.str_replace(' ','_',$channel['ch_name']).'" tvg-logo="'.$channel['ch_name'].'" ,'.$channel['ch_name'].'
-http://'.Yii::app()->params['udpxy_host'].':'.Yii::app()->params['udpxy_port'].'/udp/'.$channel['m_ip'].':'.$channel['m_port'];
+http://'.Yii::app()->params['udpxy_host'].':'.Yii::app()->params['udpxy_port'];
+if ($channel['stream_type']=="UDP"){
+	echo '/udp/';
+}elseif ($channel['stream_type']=="HTTP"){
+	echo '/http/';
+}
+echo $channel['stream_address'];
         $pstr='';
     }
 
