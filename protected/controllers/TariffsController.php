@@ -37,6 +37,16 @@ class TariffsController extends CController{
     }
     public function actionDetail(){
 
+        //Add free channels to tvpack
+        if (isset($_POST['chaddids'])&&(count($_POST['chaddids'])>0)){
+            foreach ($_POST['chaddids'] as $chid){
+                $tvaccos=new TvpackList();
+                $tvaccos->id_channel=(int)$chid;
+                $tvaccos->id_tvpack=(int)$_GET['id'];
+                $tvaccos->save();
+            }
+        }
+
         //Добавление каналов из плейлиста SevStar
         if (isset($_FILES['playlistfile'])){
             $sevstarplaylist = new SevStarPlaylist();
@@ -60,6 +70,21 @@ class TariffsController extends CController{
         $tariff=Tvpack::model()->with(array('channels'))->findByPk((int)$_GET['id']);
         if ($tariff==NULL) $this->redirect(array('index'));
 
+        $criteria= new CDbCriteria();
+		$criteria->order="ch_name ASC";
+        $freeChannels=Channels::model()->findAll($criteria);
+        $chlist=CHtml::listData($freeChannels,'id','ch_name');
+
+        $criteria= new CDbCriteria();
+        $criteria->condition="id_tvpack=:id_tvpack";
+        $criteria->params=array(':id_tvpack'=>(int)$_GET['id']);
+        $criteria->select='id_channel';
+        $channels_tvpack = TvpackList::model()->findAll($criteria);
+
+        foreach ($channels_tvpack as $del_channel){
+            unset($chlist[$del_channel->id_channel]);
+        }
+
         //----------------Управление тарифом----------------
         if (isset($_POST['newName'])&&($_POST['newName'])!=''){
             $tariff->name=$_POST['newName'];
@@ -79,7 +104,7 @@ class TariffsController extends CController{
                 }
         }
 
-        $this->render('detail',array('tariff'=>$tariff));
+        $this->render('detail',array('tariff'=>$tariff,'chlist'=>$chlist));
     }
 
 } 

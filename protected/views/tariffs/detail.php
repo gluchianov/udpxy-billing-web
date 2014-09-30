@@ -59,7 +59,20 @@
     </tbody>
 </table>
 <br />
-
+<h4>Список каналов:</h4>
+<table style="width: 100%;">
+    <form action="" method="POST">
+    <tr>
+        <td style="width: 200px;">Добавление каналов:</td>
+        <td >
+            <?php echo CHtml::listBox('chaddids',null,$chlist,array('style'=>'width:90%;','multiple'=>'multiple')); ?>
+        </td>
+        <td>
+            <input name="submit" type="submit" value="Добавить каналы в тариф">
+        </td>
+    </tr>
+    </form>
+</table><br />
 <?php
 $this->renderPartial('_channels',array(
     'channels'=>$tariff->channels,
